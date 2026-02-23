@@ -1,0 +1,58 @@
+/* Environment config table */
+.env-table-wrapper {
+  overflow-x: auto;
+  margin-top: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.env-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.env-table thead {
+  background: var(--bg-elevated);
+}
+
+.env-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.env-table td {
+  padding: 12px 16px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.env-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.env-table tbody tr {
+  transition: var(--transition);
+}
+
+.env-table tbody tr:hover {
+  background: var(--bg-surface);
+}
+
+.env-table code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.82rem;
+  color: var(--accent);
+}
+
+.env-prod {
+  color: var(--accent) !important;
+  font-weight: 600;
+}

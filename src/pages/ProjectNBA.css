@@ -1,0 +1,191 @@
+.project-deep {
+  padding-top: 64px;
+  padding-bottom: 100px;
+  min-height: 100vh;
+}
+
+.project-hero {
+  padding: 80px 0 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-hero-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.project-hero-bg::after {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  filter: blur(140px);
+  opacity: 1;
+}
+
+.project-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+  position: relative;
+  color: #fff;
+}
+
+.project-hero p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 660px;
+  line-height: 1.75;
+  position: relative;
+}
+
+.project-body {
+  padding-top: 24px;
+}
+
+/* ML Components */
+.ml-components {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.ml-card {
+  padding: 28px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.ml-card:hover {
+  border-color: var(--border-hover);
+}
+
+.ml-card h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--accent);
+}
+
+.ml-card p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Feature / Security lists */
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  transition: var(--transition);
+}
+
+.feature-item:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-elevated);
+}
+
+.feature-item-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+/* GitHub button */
+.project-github-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  margin-top: 20px;
+}
+
+.project-github-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.project-github-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Tech grid */
+.tech-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* Learned list */
+.learned-list {
+  margin-top: 12px;
+}
+
+.learned-list li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.learned-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+}
+
+/* Light theme overrides */
+[data-theme="light"] .project-hero-bg::after {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .project-hero h1 {
+  color: #171717;
+}
+
+[data-theme="light"] .project-github-btn:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}

@@ -1,0 +1,22 @@
+name: Security Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  security:
+    uses: n1ops/devsecops-pipeline-reference/.github/workflows/reusable-pipeline.yml@main
+    with:
+      language: javascript
+      runtime-version: "20"
+      install-command: "npm ci"
+      test-command: "echo 'No tests configured yet'"
+      sca-command: "npm audit --audit-level=high"
+    secrets: inherit

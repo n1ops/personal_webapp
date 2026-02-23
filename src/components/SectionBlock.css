@@ -1,0 +1,41 @@
+.section-block {
+  margin-bottom: 72px;
+}
+
+.section-block-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.section-block-content {
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.section-block-content p {
+  margin-bottom: 14px;
+}
+
+.section-block-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.section-block-content li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+}
+
+.section-block-content li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+}

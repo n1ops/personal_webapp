@@ -1,0 +1,59 @@
+.arch-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 32px 16px;
+  overflow-x: auto;
+}
+
+.arch-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.arch-node {
+  padding: 14px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 130px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  transition: var(--transition);
+  letter-spacing: 0.01em;
+}
+
+.arch-node:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+.arch-node--accent {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.arch-node--success {
+  border-color: var(--success);
+  background: rgba(74, 222, 128, 0.06);
+}
+
+.arch-arrow {
+  display: flex;
+  justify-content: center;
+  padding: 6px 0;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  opacity: 0.5;
+}
+
+.arch-arrow--right {
+  padding: 0 4px;
+  font-size: 1rem;
+}

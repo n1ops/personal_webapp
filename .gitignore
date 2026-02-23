@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.claude/
+nul
+*.log
+*.md
+.env
+.env.*
