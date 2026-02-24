@@ -254,6 +254,123 @@ export const projects = [
     ],
   },
   {
+    id: 'devsecops',
+    title: 'DevSecOps Pipeline Reference',
+    description:
+      'A complete, reusable 11-stage security pipeline that scans for secrets, vulnerabilities, insecure code, and misconfigurations — gating deployment to AWS ECS Fargate via keyless OIDC.',
+    language: 'Python',
+    route: '/projects/devsecops',
+    github: 'https://github.com/n1ops/devsecops-pipeline-reference',
+    tech: [
+      { name: 'GitHub Actions', color: '#2088ff' },
+      { name: 'FastAPI', color: '#009688' },
+      { name: 'Terraform', color: '#7b42bc' },
+      { name: 'Docker', color: '#2496ed' },
+      { name: 'AWS ECS Fargate', color: '#ff9900' },
+      { name: 'WAF', color: '#ff9900' },
+      { name: 'OWASP ZAP', color: '#e8501e' },
+      { name: 'Trivy', color: '#1904da' },
+      { name: 'Gitleaks', color: '#b02e2e' },
+      { name: 'Bandit', color: '#f7931e' },
+      { name: 'CodeQL', color: '#6e40c9' },
+      { name: 'Checkov', color: '#a855f7' },
+      { name: 'Python', color: '#3776ab' },
+      { name: 'IAM / OIDC', color: '#dd344c' },
+    ],
+    overview:
+      'A production-grade DevSecOps reference that pairs a hardened FastAPI application (73 security tests, defense-in-depth middleware, JWT auth with lockout) with an 11-stage CI/CD security pipeline. Scans for leaked secrets, vulnerable dependencies, insecure code patterns, container CVEs, IaC misconfigurations, and live application vulnerabilities — then gates deployment behind a security gate. The pipeline is reusable: any repo can call it with a ~20-line workflow file. Deploys to AWS ECS Fargate via keyless OIDC.',
+    architecture: [
+      [{ label: 'git push / Pull Request', variant: '' }],
+      [
+        { label: '\u2460 Secret Detection (Gitleaks)', variant: '' },
+        { label: '\u2461 SAST (Bandit + CodeQL)', variant: '' },
+        { label: '\u2462 SCA (pip-audit)', variant: '' },
+        { label: '\u2463 IaC Scan (Checkov)', variant: '' },
+      ],
+      [{ label: '\u2464 Unit Tests (pytest \u2014 73 tests)', variant: '' }],
+      [
+        { label: '\u2465 Container Scan (Trivy)', variant: '' },
+        { label: '\u2466 SBOM (Syft)', variant: '' },
+        { label: '\u2467 DAST (OWASP ZAP)', variant: '' },
+      ],
+      [{ label: '\u2468 Security Gate', variant: 'accent' }],
+      [{ label: '\u2469 Deploy to ECS Fargate (OIDC)', variant: 'success' }],
+    ],
+    pipelineStages: [
+      {
+        name: 'Secret Detection (Gitleaks)',
+        detail:
+          'Scans the entire git history for leaked credentials, API keys, and tokens. Full fetch-depth: 0 catches secrets buried in history. CRITICAL gate — pipeline fails immediately on findings.',
+      },
+      {
+        name: 'SAST (Bandit + CodeQL)',
+        detail:
+          'Two layers of static analysis: Bandit catches Python anti-patterns (hardcoded passwords, shell injection); CodeQL provides deep interprocedural data-flow analysis via the security-extended query suite.',
+      },
+      {
+        name: 'SCA (pip-audit)',
+        detail:
+          'Scans all Python dependencies against the OSV and PyPI advisory databases for known CVEs in transitive dependencies. CRITICAL gate — pipeline fails on vulnerable packages.',
+      },
+      {
+        name: 'IaC Scan (Checkov)',
+        detail:
+          'Scans all Terraform configurations against 750+ CIS/AWS best practice checks — missing encryption, overly permissive IAM, public S3, missing logging, and more.',
+      },
+      {
+        name: 'Container Scan (Trivy)',
+        detail:
+          'Scans the Docker image for OS package CVEs and library vulnerabilities. Image is built once and saved as a tarball — never rebuilt, preserving provenance. CRITICAL gate on HIGH/CRITICAL CVEs.',
+      },
+      {
+        name: 'DAST (OWASP ZAP)',
+        detail:
+          'Starts the live application and runs ZAP baseline scanning — automated crawling and passive/active probing for XSS, injection, information disclosure, and missing security headers.',
+      },
+    ],
+    appSecurity: [
+      'JWT auth with bcrypt hashing, iss/aud/jti claims, and JTI-based token revocation',
+      'Account lockout after 5 failed attempts with 15-minute cooldown',
+      'Timing-safe login — dummy bcrypt verify on non-existent users prevents enumeration',
+      'Pure ASGI middleware stack — SecurityHeaders, RequestID, MaxBodySize, CORS, SlowAPI',
+      '9 security headers on every response including errors (CSP, HSTS, X-Frame, COOP, CORP)',
+      'Per-endpoint rate limiting — 3-30 req/min depending on sensitivity',
+      'Row-level data isolation — IDOR returns 404 (not 403) to prevent ID enumeration',
+      'Mass assignment protection — explicit allowlist of updatable fields',
+      'Generic 500 handler — no stack traces, paths, or exception details leaked',
+      '1MB body size limit via Content-Length check and streaming byte counter',
+    ],
+    infraSecurity: [
+      'VPC with private subnets for ECS — no public IPs on containers',
+      'WAFv2 with 3 AWS managed rule groups: CommonRuleSet, KnownBadInputs, SQLiRuleSet',
+      'Non-root container with read-only filesystem and all Linux capabilities dropped',
+      'ECR with immutable image tags and scan-on-push',
+      'Secrets Manager with random_password — injected at runtime via ECS secrets',
+      'KMS-encrypted CloudWatch logs with VPC Flow Logs',
+      'CloudWatch Alarms for CPU >80%, Memory >80%, ALB 5xx >10 — wired to SNS',
+      'OIDC federation — keyless GitHub Actions auth, deploy role scoped to main branch',
+    ],
+    testCoverage: {
+      total: 73,
+      categories: [
+        { name: 'Authentication & Token Security', count: 34 },
+        { name: 'Health, Middleware & Headers', count: 11 },
+        { name: 'Rate Limiting', count: 9 },
+        { name: 'CRUD, IDOR & Input Validation', count: 19 },
+      ],
+    },
+    reusable:
+      'The pipeline is parameterized and reusable. Any GitHub repository can call it by adding a ~20-line workflow file — just pass in language, runtime version, test command, and optional Docker/Terraform settings. Stages with empty inputs skip automatically. The security gate treats skipped stages as passing.',
+    learned: [
+      'DevSecOps pipeline design — 11-stage scanning with gate enforcement and SARIF integration',
+      'Application hardening — JWT revocation, timing-safe auth, ASGI middleware, rate limiting',
+      'Infrastructure as Code security — Checkov, WAFv2, KMS, private networking, OIDC federation',
+      'Container security — non-root, read-only filesystem, capability dropping, image provenance',
+      'DAST integration — running OWASP ZAP against a live application in CI/CD',
+      'Reusable workflow design — parameterized pipelines with conditional stage execution',
+    ],
+  },
+  {
     id: 'weather',
     title: 'AWS Lambda Discord Weather Bot',
     description:
