@@ -371,6 +371,129 @@ export const projects = [
     ],
   },
   {
+    id: 'sentinel',
+    title: 'Microsoft Sentinel Detection Lab',
+    description:
+      'A Detection-as-Code framework for Microsoft Sentinel — 12 scheduled KQL analytics rules mapped to MITRE ATT\u0026CK, 3 automation rules, an IR playbook, and a SOC dashboard, all deployed via Terraform and validated by CI/CD.',
+    language: 'KQL',
+    route: '/projects/sentinel',
+    github: 'https://github.com/n1ops/sentinel-detection-lab',
+    tech: [
+      { name: 'Microsoft Sentinel', color: '#0078d4' },
+      { name: 'Terraform', color: '#7b42bc' },
+      { name: 'KQL', color: '#0078d4' },
+      { name: 'Azure', color: '#0089d6' },
+      { name: 'ARM Templates', color: '#0078d4' },
+      { name: 'GitHub Actions', color: '#2088ff' },
+      { name: 'Python', color: '#3776ab' },
+      { name: 'Logic Apps', color: '#0089d6' },
+      { name: 'MITRE ATT\u0026CK', color: '#c41e3a' },
+    ],
+    overview:
+      'A complete Detection-as-Code framework for Microsoft Sentinel that treats security detections as software artifacts. A single terraform apply provisions 19 Azure resources — a Log Analytics Workspace with Sentinel enabled, 12 scheduled KQL analytics rules mapped across 6 MITRE ATT\u0026CK tactics, 3 automation rules for incident triage, and Azure Activity Log ingestion. New detections go through pull requests, are validated by CI, and deployed on merge.',
+    architecture: [
+      [
+        { label: 'Azure Activity Logs', variant: '' },
+        { label: 'Azure AD Sign-in Logs', variant: '' },
+      ],
+      [{ label: 'Log Analytics Workspace', variant: '' }],
+      [{ label: 'Microsoft Sentinel', variant: 'accent' }],
+      [
+        { label: '12 Scheduled Analytics Rules (KQL)', variant: '' },
+      ],
+      [
+        { label: 'Alert Grouping + Entity Mapping', variant: '' },
+      ],
+      [
+        { label: '3 Automation Rules (Triage)', variant: '' },
+        { label: 'IR Playbook (Logic App)', variant: 'accent' },
+      ],
+      [{ label: 'SOC Dashboard (Workbook)', variant: 'success' }],
+    ],
+    mitreMatrix: [
+      { tactic: 'Credential Access', technique: 'T1110', detection: 'Brute Force Sign-in Attempts', severity: 'Medium' },
+      { tactic: 'Credential Access', technique: 'T1110', detection: 'Password Spray Attack', severity: 'High' },
+      { tactic: 'Initial Access', technique: 'T1078', detection: 'Impossible Travel Sign-in', severity: 'High' },
+      { tactic: 'Initial Access', technique: 'T1566', detection: 'Suspicious Inbox Rule Post-Phishing', severity: 'High' },
+      { tactic: 'Initial Access', technique: 'T1566', detection: 'Suspicious OAuth Consent Grant', severity: 'Medium' },
+      { tactic: 'Persistence', technique: 'T1137', detection: 'New Inbox Forwarding Rule', severity: 'Medium' },
+      { tactic: 'Persistence', technique: 'T1136', detection: 'Suspicious Service Principal Creation', severity: 'Medium' },
+      { tactic: 'Lateral Movement', technique: 'T1021', detection: 'Anomalous RDP Sign-in', severity: 'Medium' },
+      { tactic: 'Lateral Movement', technique: 'T1078', detection: 'Multi-Host Admin Logon', severity: 'High' },
+      { tactic: 'Exfiltration', technique: 'T1567', detection: 'Bulk File Download', severity: 'Medium' },
+      { tactic: 'Exfiltration', technique: 'T1114', detection: 'Mail Forwarding to External Domain', severity: 'High' },
+      { tactic: 'Defense Evasion', technique: 'T1027', detection: 'Encoded PowerShell Execution', severity: 'High' },
+    ],
+    detectionStats: {
+      rules: 12,
+      tactics: 6,
+      resources: 19,
+      automationRules: 3,
+    },
+    detectionHighlights: [
+      {
+        name: 'Impossible Travel Detection',
+        detail:
+          'Implements the Haversine great-circle distance formula in KQL. Flags sign-ins requiring travel speed over 900 km/h across 500+ km — faster than commercial flight.',
+      },
+      {
+        name: 'Password Spray Correlation',
+        detail:
+          'Two-stage detection: identifies spray IPs hitting 5+ distinct accounts with specific failure codes, then correlates successful logins from those IPs within 1 hour.',
+      },
+      {
+        name: 'Encoded PowerShell Detection',
+        detail:
+          'Detects caret insertion evasion, Base64 commands, FromBase64String, download cradles, hidden windows, and Invoke-Expression variants. Includes best-effort Base64 decoding.',
+      },
+      {
+        name: 'Anomalous RDP Baseline',
+        detail:
+          'Builds a 14-day baseline of known RDP source IPs per user, then flags logins from new IPs, off-hours (before 6 AM / after 8 PM), or weekends with composite anomaly scoring.',
+      },
+    ],
+    automationRules: [
+      {
+        name: 'Auto-Assign High Severity',
+        detail: 'High-severity incidents are automatically set to Active status and queued for SOC review.',
+      },
+      {
+        name: 'Auto-Tag Phishing (T1566)',
+        detail: 'Incidents matching T1566 techniques are auto-tagged with Phishing and InitialAccess labels for quick triage.',
+      },
+      {
+        name: 'Auto-Close Informational',
+        detail: 'Informational-severity incidents are auto-closed with a BenignPositive classification after enrichment.',
+      },
+    ],
+    dashboardTiles: [
+      'Incidents over time \u2014 bar chart by severity',
+      'Mean Time to Resolve (MTTR) trend line',
+      'Top targeted accounts with alert counts',
+      'Alert source distribution pie chart',
+      'MITRE ATT\u0026CK coverage grid by tactic',
+      'Open incidents by age heatmap',
+    ],
+    security: [
+      'No hardcoded secrets \u2014 all dynamic values from data sources or variables',
+      'Terraform state excludes secrets via .gitignore (tfstate, tfvars)',
+      'Network-hardened workspace \u2014 internet ingestion and query disabled',
+      'Managed Identity on IR playbook \u2014 SystemAssigned, Sentinel Responder RBAC',
+      'CI/CD validation \u2014 Gitleaks, CodeQL, Checkov, and KQL validator on every PR',
+      'Variable validation blocks \u2014 regex-constrained inputs for location and prefix',
+      'Alert deduplication \u2014 AllEntities matching with 5-hour lookback and 1-hour suppression',
+      'CODEOWNERS requires review on all changes',
+    ],
+    learned: [
+      'Detection-as-Code \u2014 treating security detections as version-controlled, CI-validated software artifacts',
+      'KQL engineering \u2014 Haversine distance, materialize(), serialize/prev(), dynamic entity mapping',
+      'MITRE ATT\u0026CK mapping \u2014 systematic tactic and technique coverage across the attack lifecycle',
+      'Terraform for_each patterns \u2014 DRY deployment of 12 rules from a single resource block',
+      'Sentinel automation \u2014 incident triage rules, Logic App playbooks, workbook dashboards',
+      'SOC workflow design \u2014 alert grouping, entity correlation, suppression, and deduplication',
+    ],
+  },
+  {
     id: 'weather',
     title: 'AWS Lambda Discord Weather Bot',
     description:

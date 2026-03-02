@@ -13,6 +13,7 @@ import ProjectChess from './pages/ProjectChess';
 import ProjectWeather from './pages/ProjectWeather';
 import ProjectTerraform from './pages/ProjectTerraform';
 import ProjectDevSecOps from './pages/ProjectDevSecOps';
+import ProjectSentinel from './pages/ProjectSentinel';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -42,6 +43,7 @@ export default function App() {
             <Route path="/projects/weather" element={<ProjectWeather />} />
             <Route path="/projects/terraform" element={<ProjectTerraform />} />
             <Route path="/projects/devsecops" element={<ProjectDevSecOps />} />
+            <Route path="/projects/sentinel" element={<ProjectSentinel />} />
           </Routes>
         </AnimatePresence>
       </main>

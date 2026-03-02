@@ -1,0 +1,89 @@
+/* Sentinel stats cards */
+.sentinel-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.sentinel-stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.sentinel-stat-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-elevated);
+}
+
+.sentinel-stat-number {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.sentinel-stat-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* MITRE severity badges */
+.severity-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.severity-high {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.severity-medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.severity-low {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.severity-informational {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+/* MITRE table tactic column */
+.mitre-table td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .sentinel-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .sentinel-stats {
+    grid-template-columns: 1fr;
+  }
+}
